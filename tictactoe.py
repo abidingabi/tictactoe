@@ -2,6 +2,8 @@ import Tkinter as tk
 from PIL import Image, ImageTk
 from random import randint
 
+
+ 
 w, h = 3, 3;
 Board = [[0 for x in range(w)] for y in range(h)] 
 
@@ -14,6 +16,14 @@ while i <= 2:
     j=0
     i+=1
 i=0
+
+root1 = tk.Tk()
+root1.title('Tic Tac Toe')
+root1.geometry('320x320')
+
+Ximage = ImageTk.PhotoImage(file='.\Images\X Square.png')
+Oimage = ImageTk.PhotoImage(file='.\Images\O Square.png')
+Blankimage = ImageTk.PhotoImage(file='.\Images\Empty Square.png')
 
 def isWon():
     if Board[0][0] == 'X' and Board[0][1] == 'X' and Board[0][2] == 'X':
@@ -70,7 +80,6 @@ def isWon():
     
 
 def machineMove():
-    Ximage = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\X Square.png')
     if Board[0][0] == '' or Board[0][2] == '' or Board[2][0] == '' or Board[2][2] == '':
             choice1 = randint(0,1)
             choice2 = randint(0,1)
@@ -142,13 +151,11 @@ def machineMove():
                 
                                 
 
-root1 = tk.Tk()
-root1.title('Tic Tac Toe')
-root1.geometry('320x320')
+
 
 def callbackTL():
     TL.config(state='disabled')
-    imageTL  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageTL  = Oimage
     TL.image = imageTL
     TL.configure(image=imageTL)
     Board[0][0] = 'O'
@@ -163,7 +170,7 @@ def callbackTL():
             
 def callbackTM():
     TM.config(state='disabled')
-    imageTM  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageTM  = Oimage
     TM.image = imageTM
     TM.configure(image=imageTM)
     Board[1][0] = 'O'
@@ -180,7 +187,7 @@ def callbackTM():
     
 def callbackTR():
     TR.config(state='disabled')
-    imageTR  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageTR  = Oimage
     TR.image = imageTR
     TR.configure(image=imageTR)
     Board[2][0] = 'O'
@@ -196,7 +203,7 @@ def callbackTR():
 
 def callbackML():
     ML.config(state='disabled')
-    imageML  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageML  = Oimage
     ML.image = imageML
     ML.configure(image=imageML)
     Board[0][1] = 'O'
@@ -211,7 +218,7 @@ def callbackML():
 
 def callbackMM():
     MM.config(state='disabled')
-    imageMM  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageMM  = Oimage
     MM.image = imageMM
     MM.configure(image=imageMM)
     Board[1][1] = 'O'
@@ -227,7 +234,7 @@ def callbackMM():
 
 def callbackMR():
     MR.config(state='disabled')
-    imageMR  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageMR  = Oimage
     MR.image = imageMR
     MR.configure(image=imageMR)
     Board[2][1] = 'O'
@@ -243,7 +250,7 @@ def callbackMR():
 
 def callbackBL():
     BL.config(state='disabled')
-    imageBL  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageBL  = Oimage
     BL.image = imageBL
     BL.configure(image=imageBL)
     Board[0][2] = 'O'
@@ -259,7 +266,7 @@ def callbackBL():
 
 def callbackBM():
     BM.config(state='disabled')
-    imageBM = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageBM = Oimage
     BM.image = imageBM
     BM.configure(image=imageBM)
     Board[1][2] = 'O'
@@ -276,7 +283,7 @@ def callbackBM():
 
 def callbackBR():
     BR.config(state='disabled')
-    imageBR  = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\O Square.png')
+    imageBR  = Oimage
     BR.image = imageBR
     BR.configure(image=imageBR)
     Board[2][2] = 'O'
@@ -291,57 +298,57 @@ def callbackBR():
 
 
 TL = tk.Button(root1, command=callbackTL)
-imageTL = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageTL = Blankimage
 TL.config(image=imageTL)
 TL.image = imageTL
 TL.grid(column=0, row=0)
 
 TM = tk.Button(root1, command=callbackTM)
-imageTM = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageTM = Blankimage
 TM.config(image=imageTM)
 TM.image = imageTM
 TM.grid(column=1, row=0)
 
 TR = tk.Button(root1, command=callbackTR)
-imageTR = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageTR = Blankimage
 TR.config(image=imageTR)
 TR.image = imageTR
 TR.grid(column=2, row=0)
 
 
 ML = tk.Button(root1, command=callbackML)
-imageML = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageML = Blankimage
 ML.config(image=imageML)
 ML.image = imageML
 ML.grid(column=0, row=1)
 
 MM = tk.Button(root1, command=callbackMM)
-imageMM = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageMM = Blankimage
 MM.config(image=imageMM)
 MM.image = imageTM
 MM.grid(column=1, row=1)
 
 MR = tk.Button(root1, command=callbackMR)
-imageMR = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageMR = Blankimage
 MR.config(image=imageMR)
 MR.image = imageMR
 MR.grid(column=2, row=1)
 
 
 BL = tk.Button(root1, command=callbackBL)
-imageBL = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageBL = Blankimage
 BL.config(image=imageBL)
 BL.image = imageTL
 BL.grid(column=0, row=2)
 
 BM = tk.Button(root1, command=callbackBM)
-imageBM = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageBM = Blankimage
 BM.config(image=imageBM)
 BM.image = imageBM
 BM.grid(column=1, row=2)
 
 BR = tk.Button(root1, command=callbackBR)
-imageBR = ImageTk.PhotoImage(file='C:\Users\dansm\Desktop\Folders\Programming\Python\Tkinkter\Images\Empty Square.png')
+imageBR = Blankimage
 BR.config(image=imageBR)
 BR.image = imageBR
 BR.grid(column=2, row=2)
