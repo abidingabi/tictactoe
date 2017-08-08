@@ -142,12 +142,12 @@ def machineMove():
             BM.configure(image=Ximage)
             BM.config(state='disabled')
     if not isWon():
-        garbageVar=0
-                                
+        garbageVar = 0                     
     else:
         w = tk.Label(root1, text=str(isWon()+' has won.'))
         w.pack(side='top')
-                                                        
+        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
+            x.config(state = 'disabled')                                                   
                 
                                 
 
