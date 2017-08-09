@@ -5,6 +5,7 @@ from random import randint
 EMPTY = 0
 CROSS = 1
 NOUGHT = 2
+PLAYER_NAMES = ['Nobody', 'Computer', 'Player']    
  
 w, h = 3, 3;
 Board = [[0 for x in range(w)] for y in range(h)] 
@@ -27,59 +28,71 @@ Ximage = ImageTk.PhotoImage(file='.\Images\X Square.png')
 Oimage = ImageTk.PhotoImage(file='.\Images\O Square.png')
 Blankimage = ImageTk.PhotoImage(file='.\Images\Empty Square.png')
 
+def getPlayerName(side):
+	return PLAYER_NAMES[side]
+	
+def disableAllButtons():
+	for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
+		x.config(state = 'disabled')                                                   
+
 def isWon():
     if Board[0][0] == CROSS and Board[0][1] == CROSS and Board[0][2] == CROSS:
-        return 'AI'
+        return CROSS
         
     elif Board[1][0] == CROSS and Board[1][1] == CROSS and Board[1][2] == CROSS:
-        return 'AI'
+        return CROSS
 
     elif Board[2][0] == CROSS and Board[2][1] == CROSS and Board[2][2] == CROSS:
-        return 'AI'
+        return CROSS
   
     elif Board[0][0] == CROSS and Board[1][0] == CROSS and Board[2][0] == CROSS:
-        return 'AI'
+        return CROSS
 
     elif Board[0][1] == CROSS and Board[1][1] == CROSS and Board[2][1] == CROSS:
-        return 'AI'
+        return CROSS
 
     elif Board[0][2] == CROSS and Board[1][2] == CROSS and Board[2][2] == CROSS:
-        return 'AI'
+        return CROSS
 
     elif Board[0][0] == CROSS and Board[1][1] == CROSS and Board[2][2] == CROSS:
-        return 'AI'
+        return CROSS
 
     elif Board[2][0] == CROSS and Board[1][1] == CROSS and Board[0][2] == CROSS:
-        return 'AI'
+        return CROSS
 
     elif Board[0][0] == NOUGHT and Board[0][1] == NOUGHT and Board[0][2] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
     elif Board[1][0] == NOUGHT and Board[1][1] == NOUGHT and Board[1][2] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
     elif Board[2][0] == NOUGHT and Board[2][1] == NOUGHT and Board[2][2] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
         
     elif Board[0][0] == NOUGHT and Board[1][0] == NOUGHT and Board[2][0] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
     elif Board[0][1] == NOUGHT and Board[1][1] == NOUGHT and Board[2][1] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
     elif Board[0][2] == NOUGHT and Board[1][2] == NOUGHT and Board[2][2] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
     elif Board[0][0] == NOUGHT and Board[1][1] == NOUGHT and Board[2][2] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
     elif Board[2][0] == NOUGHT and Board[1][1] == NOUGHT and Board[0][2] == NOUGHT:
-        return 'Player'
+        return NOUGHT
 
     else:
-        return False
+        return EMPTY
     
+def announceWinner():
+	side = isWon()
+	w = tk.Label(root1, text=getPlayerName(side)+' has won.')
+	w.pack(side='top')
+	disableAllButtons()
 
 def machineMove():
     if Board[0][0] == EMPTY or Board[0][2] == EMPTY or Board[2][0] == EMPTY or Board[2][2] == EMPTY:
@@ -146,14 +159,7 @@ def machineMove():
     if not isWon():
         garbageVar = 0                     
     else:
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')                                                   
-                
-                                
-
-
+        announceWinner()
 
 def callbackTL():
     TL.config(state='disabled')
@@ -164,11 +170,7 @@ def callbackTL():
     if not isWon():
         machineMove()
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
+		announceWinner()
             
 def callbackTM():
     TM.config(state='disabled')
@@ -178,14 +180,8 @@ def callbackTM():
     Board[1][0] = NOUGHT
     if not isWon():
         machineMove()
-    
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
-
+		announceWinner()
     
 def callbackTR():
     TR.config(state='disabled')
@@ -195,13 +191,8 @@ def callbackTR():
     Board[2][0] = NOUGHT
     if not isWon():
         machineMove()
-    
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
+		announceWinner()
 
 def callbackML():
     ML.config(state='disabled')
@@ -212,11 +203,7 @@ def callbackML():
     if not isWon():
         machineMove()
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
+		announceWinner()
 
 def callbackMM():
     MM.config(state='disabled')
@@ -226,13 +213,8 @@ def callbackMM():
     Board[1][1] = NOUGHT
     if not isWon():
         machineMove()
-    
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
+		announceWinner()
 
 def callbackMR():
     MR.config(state='disabled')
@@ -244,12 +226,8 @@ def callbackMR():
     if not isWon():
         machineMove()
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
-
+		announceWinner()
+		
 def callbackBL():
     BL.config(state='disabled')
     imageBL  = Oimage
@@ -260,12 +238,8 @@ def callbackBL():
     if not isWon():
         machineMove()
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
-
+		announceWinner()
+		
 def callbackBM():
     BM.config(state='disabled')
     imageBM = Oimage
@@ -277,11 +251,7 @@ def callbackBM():
     if not isWon():
         machineMove()
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
+		announceWinner()
 
 def callbackBR():
     BR.config(state='disabled')
@@ -293,11 +263,7 @@ def callbackBR():
     if not isWon():
         machineMove()
     else:
-        for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-            x.config(state = 'disabled')
-        w = tk.Label(root1, text=str(isWon()+' has won.'))
-        w.pack(side='top')
-
+		announceWinner()
 
 TL = tk.Button(root1, command=callbackTL)
 imageTL = Blankimage
