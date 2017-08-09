@@ -19,6 +19,8 @@ Ximage = ImageTk.PhotoImage(file='.\Images\X Square.png')
 Oimage = ImageTk.PhotoImage(file='.\Images\O Square.png')
 Blankimage = ImageTk.PhotoImage(file='.\Images\Empty Square.png')
 
+Images = [Blankimage, Ximage, Oimage]
+
 def getPlayerName(side):
 	return PLAYER_NAMES[side]
 	
@@ -28,8 +30,13 @@ def disableAllButtons():
 
 def cell(x,y): return Board[y*3+x]
 
-def setCell(x,y,value): Board[y*3+x] = value
-
+def setCell(x,y,value): 
+	index = y*3+x
+	Board[index] = value
+	Buttons[index].image = Images[value]
+	Buttons[index].configure(image=Images[value])
+	Buttons[index].config(state='disabled')
+	
 def isWon():
     if cell(0,0) == CROSS and cell(0,1) == CROSS and cell(0,2) == CROSS:
         return CROSS
@@ -106,28 +113,9 @@ def machineMove():
                     choice2 = 2
                                         
             setCell(choice1,choice2, CROSS)
-            if choice1 == 0 and choice2 == 0:
-                Buttons[0].image = Ximage
-                Buttons[0].configure(image=Ximage)
-                Buttons[0].config(state='disabled')
-            elif choice1 == 2 and choice2 == 0:
-                Buttons[2].image = Ximage
-                Buttons[2].configure(image=Ximage)
-                Buttons[2].config(state='disabled')
-            elif choice1 == 0 and choice2 == 2:
-                Buttons[6].image = Ximage
-                Buttons[6].configure(image=Ximage)
-                Buttons[6].config(state='disabled')
-            elif choice1 == 2 and choice2 == 2:
-                Buttons[8].image = Ximage
-                Buttons[8].configure(image=Ximage)
-                Buttons[8].config(state='disabled')
         
     elif cell(1,1) == EMPTY:
         setCell(1,1,CROSS)
-        Buttons[4].image = Ximage
-        Buttons[4].configure(image=Ximage)
-        Buttons[4].config(state='disabled')
     elif cell(1,0) == EMPTY or cell(0,1) == EMPTY or cell(2,1) == EMPTY or cell(1,2) == EMPTY:
         choice1 = randint(0,2)
         choice2 = randint(0,2)
@@ -135,29 +123,10 @@ def machineMove():
             choice1 = randint(0,2)
             choice2 = randint(0,2)
         setCell(choice1, choice2, CROSS)
-        if choice1 == 1 and choice2 == 0:
-            Buttons[1].image = Ximage
-            Buttons[1].configure(image=Ximage)
-            Buttons[1].config(state='disabled')
-        elif choice1 == 0 and choice2 == 1:
-            Buttons[3].image = Ximage
-            Buttons[3].configure(image=Ximage)
-            Buttons[3].config(state='disabled')
-        elif choice1 == 2 and choice2 == 1:
-            Buttons[5].image = Ximage
-            Buttons[5].configure(image=Ximage)
-            Buttons[5].config(state='disabled')
-        elif choice1 == 1 and choice2 == 2:
-            Buttons[7].image = Ximage
-            Buttons[7].configure(image=Ximage)
-            Buttons[7].config(state='disabled')
     if  isWon():
         announceWinner()
 
 def onButtonPress(button, x,y):
-    button.config(state='disabled')
-    button.image = Oimage
-    button.configure(image=Oimage)
     setCell(x,y, NOUGHT)
     if not isWon():
         machineMove()
