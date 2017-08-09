@@ -54,9 +54,9 @@ def won(x):
 		return False
 	
 def isWon():
-	if won(CROSS):
+	if won(1):
 		return CROSS    
-	elif won(NOUGHT):
+	elif won(8):
 		return NOUGHT
 	else:
 		return EMPTY
