@@ -161,166 +161,70 @@ def machineMove():
     else:
         announceWinner()
 
-def callbackTL():
-    TL.config(state='disabled')
-    imageTL  = Oimage
-    TL.image = imageTL
-    TL.configure(image=imageTL)
-    Board[0][0] = NOUGHT
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-            
-def callbackTM():
-    TM.config(state='disabled')
-    imageTM  = Oimage
-    TM.image = imageTM
-    TM.configure(image=imageTM)
-    Board[1][0] = NOUGHT
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-    
-def callbackTR():
-    TR.config(state='disabled')
-    imageTR  = Oimage
-    TR.image = imageTR
-    TR.configure(image=imageTR)
-    Board[2][0] = NOUGHT
+def onButtonPress(button, x,y):
+    button.config(state='disabled')
+    button.image = Oimage
+    button.configure(image=Oimage)
+    Board[x][y] = NOUGHT
     if not isWon():
         machineMove()
     else:
 		announceWinner()
 
-def callbackML():
-    ML.config(state='disabled')
-    imageML  = Oimage
-    ML.image = imageML
-    ML.configure(image=imageML)
-    Board[0][1] = NOUGHT
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-
-def callbackMM():
-    MM.config(state='disabled')
-    imageMM  = Oimage
-    MM.image = imageMM
-    MM.configure(image=imageMM)
-    Board[1][1] = NOUGHT
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-
-def callbackMR():
-    MR.config(state='disabled')
-    imageMR  = Oimage
-    MR.image = imageMR
-    MR.configure(image=imageMR)
-    Board[2][1] = NOUGHT
-    
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-		
-def callbackBL():
-    BL.config(state='disabled')
-    imageBL  = Oimage
-    BL.image = imageBL
-    BL.configure(image=imageBL)
-    Board[0][2] = NOUGHT
-    
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-		
-def callbackBM():
-    BM.config(state='disabled')
-    imageBM = Oimage
-    BM.image = imageBM
-    BM.configure(image=imageBM)
-    Board[1][2] = NOUGHT
-
-
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-
-def callbackBR():
-    BR.config(state='disabled')
-    imageBR  = Oimage
-    BR.image = imageBR
-    BR.configure(image=imageBR)
-    Board[2][2] = NOUGHT
-    
-    if not isWon():
-        machineMove()
-    else:
-		announceWinner()
-
-TL = tk.Button(root1, command=callbackTL)
+TL = tk.Button(root1, command=lambda: onButtonPress(TL, 0, 0))
 imageTL = Blankimage
 TL.config(image=imageTL)
 TL.image = imageTL
 TL.grid(column=0, row=0)
 
-TM = tk.Button(root1, command=callbackTM)
+TM = tk.Button(root1, command=lambda: onButtonPress(TM, 1, 0))
 imageTM = Blankimage
 TM.config(image=imageTM)
 TM.image = imageTM
 TM.grid(column=1, row=0)
 
-TR = tk.Button(root1, command=callbackTR)
+TR = tk.Button(root1, command=lambda: onButtonPress(TR, 2, 0))
 imageTR = Blankimage
 TR.config(image=imageTR)
 TR.image = imageTR
 TR.grid(column=2, row=0)
 
 
-ML = tk.Button(root1, command=callbackML)
+ML = tk.Button(root1, command=lambda: onButtonPress(ML, 0, 1))
 imageML = Blankimage
 ML.config(image=imageML)
 ML.image = imageML
 ML.grid(column=0, row=1)
 
-MM = tk.Button(root1, command=callbackMM)
+MM = tk.Button(root1, command=lambda: onButtonPress(MM, 1, 1))
 imageMM = Blankimage
 MM.config(image=imageMM)
 MM.image = imageTM
 MM.grid(column=1, row=1)
 
-MR = tk.Button(root1, command=callbackMR)
+MR = tk.Button(root1, command=lambda: onButtonPress(MR, 2, 1))
 imageMR = Blankimage
 MR.config(image=imageMR)
 MR.image = imageMR
 MR.grid(column=2, row=1)
 
 
-BL = tk.Button(root1, command=callbackBL)
+BL = tk.Button(root1, command=lambda: onButtonPress(BL, 0, 2))
 imageBL = Blankimage
 BL.config(image=imageBL)
 BL.image = imageTL
 BL.grid(column=0, row=2)
 
-BM = tk.Button(root1, command=callbackBM)
+BM = tk.Button(root1, command=lambda: onButtonPress(BM, 1, 2))
 imageBM = Blankimage
 BM.config(image=imageBM)
 BM.image = imageBM
 BM.grid(column=1, row=2)
 
-BR = tk.Button(root1, command=callbackBR)
+BR = tk.Button(root1, command=lambda: onButtonPress(BR, 2, 2))
 imageBR = Blankimage
 BR.config(image=imageBR)
 BR.image = imageBR
 BR.grid(column=2, row=2)
-
-
 
 root1.mainloop()
