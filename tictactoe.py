@@ -1,7 +1,7 @@
 import Tkinter as tk
 from PIL import Image, ImageTk
 from random import randint
-#remove me
+
 EMPTY = 0
 CROSS = 1
 NOUGHT = 2
