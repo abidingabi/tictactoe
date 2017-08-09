@@ -7,6 +7,9 @@ CROSS = 1
 NOUGHT = 2
 PLAYER_NAMES = ['Nobody', 'Computer', 'Player']    
 
+
+
+
 w, h = 3, 3;
 Board = [EMPTY]*9
 Buttons = []
@@ -36,59 +39,27 @@ def setCell(x,y,value):
 	Buttons[index].image = Images[value]
 	Buttons[index].configure(image=Images[value])
 	Buttons[index].config(state='disabled')
+
+def multiplyArray(list):
+	product = 1
+	for x in list:
+		product *= x
+	return product
+
+def won(x):
+	WINNING_COMBOS = [[Board[0],Board[1],Board[2]], [Board[3],Board[4],Board[5]], [Board[6],Board[7],Board[8]], [Board[0],Board[3],Board[6]], [Board[1],Board[4],Board[7]], [Board[2],Board[5],Board[8]], [Board[0],Board[4],Board[8]], [Board[2],Board[4],Board[6]]]
+	if multiplyArray(WINNING_COMBOS[0]) == x or multiplyArray(WINNING_COMBOS[1]) == x or multiplyArray(WINNING_COMBOS[2]) == x or multiplyArray(WINNING_COMBOS[2]) == x or multiplyArray(WINNING_COMBOS[3]) == x or multiplyArray(WINNING_COMBOS[4]) == x or multiplyArray(WINNING_COMBOS[5]) == x or multiplyArray(WINNING_COMBOS[6]) == x or multiplyArray(WINNING_COMBOS[7]) == x:
+		return True
+	else:
+		return False
 	
 def isWon():
-    if cell(0,0) == CROSS and cell(0,1) == CROSS and cell(0,2) == CROSS:
-        return CROSS
-        
-    elif cell(1,0) == CROSS and cell(1,1) == CROSS and cell(1,2) == CROSS:
-        return CROSS
-
-    elif cell(2,0) == CROSS and cell(2,1) == CROSS and cell(2,2) == CROSS:
-        return CROSS
-  
-    elif cell(0,0) == CROSS and cell(1,0) == CROSS and cell(2,0) == CROSS:
-        return CROSS
-
-    elif cell(0,1) == CROSS and cell(1,1) == CROSS and cell(2,1) == CROSS:
-        return CROSS
-
-    elif cell(0,2) == CROSS and cell(1,2) == CROSS and cell(2,2) == CROSS:
-        return CROSS
-
-    elif cell(0,0) == CROSS and cell(1,1) == CROSS and cell(2,2) == CROSS:
-        return CROSS
-
-    elif cell(2,0) == CROSS and cell(1,1) == CROSS and cell(0,2) == CROSS:
-        return CROSS
-
-    elif cell(0,0) == NOUGHT and cell(0,1) == NOUGHT and cell(0,2) == NOUGHT:
-        return NOUGHT
-
-    elif cell(1,0) == NOUGHT and cell(1,1) == NOUGHT and cell(1,2) == NOUGHT:
-        return NOUGHT
-
-    elif cell(2,0) == NOUGHT and cell(2,1) == NOUGHT and cell(2,2) == NOUGHT:
-        return NOUGHT
-
-        
-    elif cell(0,0) == NOUGHT and cell(1,0) == NOUGHT and cell(2,0) == NOUGHT:
-        return NOUGHT
-
-    elif cell(0,1) == NOUGHT and cell(1,1) == NOUGHT and cell(2,1) == NOUGHT:
-        return NOUGHT
-
-    elif cell(0,2) == NOUGHT and cell(1,2) == NOUGHT and cell(2,2) == NOUGHT:
-        return NOUGHT
-
-    elif cell(0,0) == NOUGHT and cell(1,1) == NOUGHT and cell(2,2) == NOUGHT:
-        return NOUGHT
-
-    elif cell(2,0) == NOUGHT and cell(1,1) == NOUGHT and cell(0,2) == NOUGHT:
-        return NOUGHT
-
-    else:
-        return EMPTY
+	if won(CROSS):
+		return CROSS    
+	elif won(NOUGHT):
+		return NOUGHT
+	else:
+		return EMPTY
     
 def announceWinner():
 	side = isWon()
