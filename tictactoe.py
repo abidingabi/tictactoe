@@ -2,7 +2,9 @@ import Tkinter as tk
 from PIL import Image, ImageTk
 from random import randint
 
-
+EMPTY = 0
+CROSS = 1
+NOUGHT = 2
  
 w, h = 3, 3;
 Board = [[0 for x in range(w)] for y in range(h)] 
@@ -11,7 +13,7 @@ i=0
 j=0
 while i <= 2:
     while j <= 2:
-        Board[i][j] = ''
+        Board[i][j] = EMPTY
         j+=1
     j=0
     i+=1
@@ -26,53 +28,53 @@ Oimage = ImageTk.PhotoImage(file='.\Images\O Square.png')
 Blankimage = ImageTk.PhotoImage(file='.\Images\Empty Square.png')
 
 def isWon():
-    if Board[0][0] == 'X' and Board[0][1] == 'X' and Board[0][2] == 'X':
+    if Board[0][0] == CROSS and Board[0][1] == CROSS and Board[0][2] == CROSS:
         return 'AI'
         
-    elif Board[1][0] == 'X' and Board[1][1] == 'X' and Board[1][2] == 'X':
+    elif Board[1][0] == CROSS and Board[1][1] == CROSS and Board[1][2] == CROSS:
         return 'AI'
 
-    elif Board[2][0] == 'X' and Board[2][1] == 'X' and Board[2][2] == 'X':
+    elif Board[2][0] == CROSS and Board[2][1] == CROSS and Board[2][2] == CROSS:
         return 'AI'
   
-    elif Board[0][0] == 'X' and Board[1][0] == 'X' and Board[2][0] == 'X':
+    elif Board[0][0] == CROSS and Board[1][0] == CROSS and Board[2][0] == CROSS:
         return 'AI'
 
-    elif Board[0][1] == 'X' and Board[1][1] == 'X' and Board[2][1] == 'X':
+    elif Board[0][1] == CROSS and Board[1][1] == CROSS and Board[2][1] == CROSS:
         return 'AI'
 
-    elif Board[0][2] == 'X' and Board[1][2] == 'X' and Board[2][2] == 'X':
+    elif Board[0][2] == CROSS and Board[1][2] == CROSS and Board[2][2] == CROSS:
         return 'AI'
 
-    elif Board[0][0] == 'X' and Board[1][1] == 'X' and Board[2][2] == 'X':
+    elif Board[0][0] == CROSS and Board[1][1] == CROSS and Board[2][2] == CROSS:
         return 'AI'
 
-    elif Board[2][0] == 'X' and Board[1][1] == 'X' and Board[0][2] == 'X':
+    elif Board[2][0] == CROSS and Board[1][1] == CROSS and Board[0][2] == CROSS:
         return 'AI'
 
-    elif Board[0][0] == 'O' and Board[0][1] == 'O' and Board[0][2] == 'O':
+    elif Board[0][0] == NOUGHT and Board[0][1] == NOUGHT and Board[0][2] == NOUGHT:
         return 'Player'
 
-    elif Board[1][0] == 'O' and Board[1][1] == 'O' and Board[1][2] == 'O':
+    elif Board[1][0] == NOUGHT and Board[1][1] == NOUGHT and Board[1][2] == NOUGHT:
         return 'Player'
 
-    elif Board[2][0] == 'O' and Board[2][1] == 'O' and Board[2][2] == 'O':
+    elif Board[2][0] == NOUGHT and Board[2][1] == NOUGHT and Board[2][2] == NOUGHT:
         return 'Player'
 
         
-    elif Board[0][0] == 'O' and Board[1][0] == 'O' and Board[2][0] == 'O':
+    elif Board[0][0] == NOUGHT and Board[1][0] == NOUGHT and Board[2][0] == NOUGHT:
         return 'Player'
 
-    elif Board[0][1] == 'O' and Board[1][1] == 'O' and Board[2][1] == 'O':
+    elif Board[0][1] == NOUGHT and Board[1][1] == NOUGHT and Board[2][1] == NOUGHT:
         return 'Player'
 
-    elif Board[0][2] == 'O' and Board[1][2] == 'O' and Board[2][2] == 'O':
+    elif Board[0][2] == NOUGHT and Board[1][2] == NOUGHT and Board[2][2] == NOUGHT:
         return 'Player'
 
-    elif Board[0][0] == 'O' and Board[1][1] == 'O' and Board[2][2] == 'O':
+    elif Board[0][0] == NOUGHT and Board[1][1] == NOUGHT and Board[2][2] == NOUGHT:
         return 'Player'
 
-    elif Board[2][0] == 'O' and Board[1][1] == 'O' and Board[0][2] == 'O':
+    elif Board[2][0] == NOUGHT and Board[1][1] == NOUGHT and Board[0][2] == NOUGHT:
         return 'Player'
 
     else:
@@ -80,14 +82,14 @@ def isWon():
     
 
 def machineMove():
-    if Board[0][0] == '' or Board[0][2] == '' or Board[2][0] == '' or Board[2][2] == '':
+    if Board[0][0] == EMPTY or Board[0][2] == EMPTY or Board[2][0] == EMPTY or Board[2][2] == EMPTY:
             choice1 = randint(0,1)
             choice2 = randint(0,1)
             if choice1 == 1:
                 choice1 = 2
             if choice2 == 1:
                 choice2 = 2
-            while Board[choice1][choice2] !='':
+            while Board[choice1][choice2] !=EMPTY:
                 choice1 = randint(0,1)
                 choice2 = randint(0,1)
                 if choice1 == 1:
@@ -95,7 +97,7 @@ def machineMove():
                 if choice2 == 1:
                     choice2 = 2
                                         
-            Board[choice1][choice2] = 'X'    
+            Board[choice1][choice2] = CROSS    
             if choice1 == 0 and choice2 == 0:
                 TL.image = Ximage
                 TL.configure(image=Ximage)
@@ -113,18 +115,18 @@ def machineMove():
                 BR.configure(image=Ximage)
                 BR.config(state='disabled')
         
-    elif Board[1][1] == '':
-        Board[1][1] = 'X'
+    elif Board[1][1] == EMPTY:
+        Board[1][1] = CROSS
         MM.image = Ximage
         MM.configure(image=Ximage)
         MM.config(state='disabled')
-    elif Board[1][0] == '' or Board[0][1] == '' or Board[2][1] == '' or Board[1][2] == '':
+    elif Board[1][0] == EMPTY or Board[0][1] == EMPTY or Board[2][1] == EMPTY or Board[1][2] == EMPTY:
         choice1 = randint(0,2)
         choice2 = randint(0,2)
-        while Board[choice1][choice2] !='':
+        while Board[choice1][choice2] !=EMPTY:
             choice1 = randint(0,2)
             choice2 = randint(0,2)
-        Board[choice1][choice2] = 'X'    
+        Board[choice1][choice2] = CROSS    
         if choice1 == 1 and choice2 == 0:
             TM.image = Ximage
             TM.configure(image=Ximage)
@@ -158,7 +160,7 @@ def callbackTL():
     imageTL  = Oimage
     TL.image = imageTL
     TL.configure(image=imageTL)
-    Board[0][0] = 'O'
+    Board[0][0] = NOUGHT
     if not isWon():
         machineMove()
     else:
@@ -173,7 +175,7 @@ def callbackTM():
     imageTM  = Oimage
     TM.image = imageTM
     TM.configure(image=imageTM)
-    Board[1][0] = 'O'
+    Board[1][0] = NOUGHT
     if not isWon():
         machineMove()
     
@@ -190,7 +192,7 @@ def callbackTR():
     imageTR  = Oimage
     TR.image = imageTR
     TR.configure(image=imageTR)
-    Board[2][0] = 'O'
+    Board[2][0] = NOUGHT
     if not isWon():
         machineMove()
     
@@ -206,7 +208,7 @@ def callbackML():
     imageML  = Oimage
     ML.image = imageML
     ML.configure(image=imageML)
-    Board[0][1] = 'O'
+    Board[0][1] = NOUGHT
     if not isWon():
         machineMove()
     else:
@@ -221,7 +223,7 @@ def callbackMM():
     imageMM  = Oimage
     MM.image = imageMM
     MM.configure(image=imageMM)
-    Board[1][1] = 'O'
+    Board[1][1] = NOUGHT
     if not isWon():
         machineMove()
     
@@ -237,7 +239,7 @@ def callbackMR():
     imageMR  = Oimage
     MR.image = imageMR
     MR.configure(image=imageMR)
-    Board[2][1] = 'O'
+    Board[2][1] = NOUGHT
     
     if not isWon():
         machineMove()
@@ -253,7 +255,7 @@ def callbackBL():
     imageBL  = Oimage
     BL.image = imageBL
     BL.configure(image=imageBL)
-    Board[0][2] = 'O'
+    Board[0][2] = NOUGHT
     
     if not isWon():
         machineMove()
@@ -269,7 +271,7 @@ def callbackBM():
     imageBM = Oimage
     BM.image = imageBM
     BM.configure(image=imageBM)
-    Board[1][2] = 'O'
+    Board[1][2] = NOUGHT
 
 
     if not isWon():
@@ -286,7 +288,7 @@ def callbackBR():
     imageBR  = Oimage
     BR.image = imageBR
     BR.configure(image=imageBR)
-    Board[2][2] = 'O'
+    Board[2][2] = NOUGHT
     
     if not isWon():
         machineMove()
