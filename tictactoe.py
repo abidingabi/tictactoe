@@ -8,17 +8,7 @@ NOUGHT = 2
 PLAYER_NAMES = ['Nobody', 'Computer', 'Player']    
  
 w, h = 3, 3;
-Board = [[0 for x in range(w)] for y in range(h)] 
-
-i=0
-j=0
-while i <= 2:
-    while j <= 2:
-        Board[i][j] = EMPTY
-        j+=1
-    j=0
-    i+=1
-i=0
+Board = [EMPTY]*9
 
 root1 = tk.Tk()
 root1.title('Tic Tac Toe')
@@ -33,56 +23,60 @@ def getPlayerName(side):
 	
 def disableAllButtons():
 	for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
-		x.config(state = 'disabled')                                                   
+		x.config(state = 'disabled')  
+
+def cell(x,y): return Board[y*3+x]
+
+def setCell(x,y,value): Board[y*3+x] = value
 
 def isWon():
-    if Board[0][0] == CROSS and Board[0][1] == CROSS and Board[0][2] == CROSS:
+    if cell(0,0) == CROSS and cell(0,1) == CROSS and cell(0,2) == CROSS:
         return CROSS
         
-    elif Board[1][0] == CROSS and Board[1][1] == CROSS and Board[1][2] == CROSS:
+    elif cell(1,0) == CROSS and cell(1,1) == CROSS and cell(1,2) == CROSS:
         return CROSS
 
-    elif Board[2][0] == CROSS and Board[2][1] == CROSS and Board[2][2] == CROSS:
+    elif cell(2,0) == CROSS and cell(2,1) == CROSS and cell(2,2) == CROSS:
         return CROSS
   
-    elif Board[0][0] == CROSS and Board[1][0] == CROSS and Board[2][0] == CROSS:
+    elif cell(0,0) == CROSS and cell(1,0) == CROSS and cell(2,0) == CROSS:
         return CROSS
 
-    elif Board[0][1] == CROSS and Board[1][1] == CROSS and Board[2][1] == CROSS:
+    elif cell(0,1) == CROSS and cell(1,1) == CROSS and cell(2,1) == CROSS:
         return CROSS
 
-    elif Board[0][2] == CROSS and Board[1][2] == CROSS and Board[2][2] == CROSS:
+    elif cell(0,2) == CROSS and cell(1,2) == CROSS and cell(2,2) == CROSS:
         return CROSS
 
-    elif Board[0][0] == CROSS and Board[1][1] == CROSS and Board[2][2] == CROSS:
+    elif cell(0,0) == CROSS and cell(1,1) == CROSS and cell(2,2) == CROSS:
         return CROSS
 
-    elif Board[2][0] == CROSS and Board[1][1] == CROSS and Board[0][2] == CROSS:
+    elif cell(2,0) == CROSS and cell(1,1) == CROSS and cell(0,2) == CROSS:
         return CROSS
 
-    elif Board[0][0] == NOUGHT and Board[0][1] == NOUGHT and Board[0][2] == NOUGHT:
+    elif cell(0,0) == NOUGHT and cell(0,1) == NOUGHT and cell(0,2) == NOUGHT:
         return NOUGHT
 
-    elif Board[1][0] == NOUGHT and Board[1][1] == NOUGHT and Board[1][2] == NOUGHT:
+    elif cell(1,0) == NOUGHT and cell(1,1) == NOUGHT and cell(1,2) == NOUGHT:
         return NOUGHT
 
-    elif Board[2][0] == NOUGHT and Board[2][1] == NOUGHT and Board[2][2] == NOUGHT:
+    elif cell(2,0) == NOUGHT and cell(2,1) == NOUGHT and cell(2,2) == NOUGHT:
         return NOUGHT
 
         
-    elif Board[0][0] == NOUGHT and Board[1][0] == NOUGHT and Board[2][0] == NOUGHT:
+    elif cell(0,0) == NOUGHT and cell(1,0) == NOUGHT and cell(2,0) == NOUGHT:
         return NOUGHT
 
-    elif Board[0][1] == NOUGHT and Board[1][1] == NOUGHT and Board[2][1] == NOUGHT:
+    elif cell(0,1) == NOUGHT and cell(1,1) == NOUGHT and cell(2,1) == NOUGHT:
         return NOUGHT
 
-    elif Board[0][2] == NOUGHT and Board[1][2] == NOUGHT and Board[2][2] == NOUGHT:
+    elif cell(0,2) == NOUGHT and cell(1,2) == NOUGHT and cell(2,2) == NOUGHT:
         return NOUGHT
 
-    elif Board[0][0] == NOUGHT and Board[1][1] == NOUGHT and Board[2][2] == NOUGHT:
+    elif cell(0,0) == NOUGHT and cell(1,1) == NOUGHT and cell(2,2) == NOUGHT:
         return NOUGHT
 
-    elif Board[2][0] == NOUGHT and Board[1][1] == NOUGHT and Board[0][2] == NOUGHT:
+    elif cell(2,0) == NOUGHT and cell(1,1) == NOUGHT and cell(0,2) == NOUGHT:
         return NOUGHT
 
     else:
@@ -95,14 +89,14 @@ def announceWinner():
 	disableAllButtons()
 
 def machineMove():
-    if Board[0][0] == EMPTY or Board[0][2] == EMPTY or Board[2][0] == EMPTY or Board[2][2] == EMPTY:
+    if cell(0,0) == EMPTY or cell(0,2) == EMPTY or cell(2,0) == EMPTY or cell(2,2) == EMPTY:
             choice1 = randint(0,1)
             choice2 = randint(0,1)
             if choice1 == 1:
                 choice1 = 2
             if choice2 == 1:
                 choice2 = 2
-            while Board[choice1][choice2] !=EMPTY:
+            while cell(choice1,choice2) !=EMPTY:
                 choice1 = randint(0,1)
                 choice2 = randint(0,1)
                 if choice1 == 1:
@@ -110,7 +104,7 @@ def machineMove():
                 if choice2 == 1:
                     choice2 = 2
                                         
-            Board[choice1][choice2] = CROSS    
+            setCell(choice1,choice2, CROSS)
             if choice1 == 0 and choice2 == 0:
                 TL.image = Ximage
                 TL.configure(image=Ximage)
@@ -128,18 +122,18 @@ def machineMove():
                 BR.configure(image=Ximage)
                 BR.config(state='disabled')
         
-    elif Board[1][1] == EMPTY:
-        Board[1][1] = CROSS
+    elif cell(1,1) == EMPTY:
+        setCell(1,1,CROSS)
         MM.image = Ximage
         MM.configure(image=Ximage)
         MM.config(state='disabled')
-    elif Board[1][0] == EMPTY or Board[0][1] == EMPTY or Board[2][1] == EMPTY or Board[1][2] == EMPTY:
+    elif cell(1,0) == EMPTY or cell(0,1) == EMPTY or cell(2,1) == EMPTY or cell(1,2) == EMPTY:
         choice1 = randint(0,2)
         choice2 = randint(0,2)
-        while Board[choice1][choice2] !=EMPTY:
+        while cell(choice1,choice2) !=EMPTY:
             choice1 = randint(0,2)
             choice2 = randint(0,2)
-        Board[choice1][choice2] = CROSS    
+        setCell(choice1, choice2, CROSS)
         if choice1 == 1 and choice2 == 0:
             TM.image = Ximage
             TM.configure(image=Ximage)
@@ -156,16 +150,14 @@ def machineMove():
             BM.image = Ximage
             BM.configure(image=Ximage)
             BM.config(state='disabled')
-    if not isWon():
-        garbageVar = 0                     
-    else:
+    if  isWon():
         announceWinner()
 
 def onButtonPress(button, x,y):
     button.config(state='disabled')
     button.image = Oimage
     button.configure(image=Oimage)
-    Board[x][y] = NOUGHT
+    setCell(x,y, NOUGHT)
     if not isWon():
         machineMove()
     else:
