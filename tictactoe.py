@@ -6,9 +6,10 @@ EMPTY = 0
 CROSS = 1
 NOUGHT = 2
 PLAYER_NAMES = ['Nobody', 'Computer', 'Player']    
- 
+
 w, h = 3, 3;
 Board = [EMPTY]*9
+Buttons = []
 
 root1 = tk.Tk()
 root1.title('Tic Tac Toe')
@@ -22,7 +23,7 @@ def getPlayerName(side):
 	return PLAYER_NAMES[side]
 	
 def disableAllButtons():
-	for x in (TL, TM, TR, ML, MM, MR, BL, BM, BR):
+	for x in Buttons:
 		x.config(state = 'disabled')  
 
 def cell(x,y): return Board[y*3+x]
@@ -106,27 +107,27 @@ def machineMove():
                                         
             setCell(choice1,choice2, CROSS)
             if choice1 == 0 and choice2 == 0:
-                TL.image = Ximage
-                TL.configure(image=Ximage)
-                TL.config(state='disabled')
+                Buttons[0].image = Ximage
+                Buttons[0].configure(image=Ximage)
+                Buttons[0].config(state='disabled')
             elif choice1 == 2 and choice2 == 0:
-                TR.image = Ximage
-                TR.configure(image=Ximage)
-                TR.config(state='disabled')
+                Buttons[2].image = Ximage
+                Buttons[2].configure(image=Ximage)
+                Buttons[2].config(state='disabled')
             elif choice1 == 0 and choice2 == 2:
-                BL.image = Ximage
-                BL.configure(image=Ximage)
-                BL.config(state='disabled')
+                Buttons[6].image = Ximage
+                Buttons[6].configure(image=Ximage)
+                Buttons[6].config(state='disabled')
             elif choice1 == 2 and choice2 == 2:
-                BR.image = Ximage
-                BR.configure(image=Ximage)
-                BR.config(state='disabled')
+                Buttons[8].image = Ximage
+                Buttons[8].configure(image=Ximage)
+                Buttons[8].config(state='disabled')
         
     elif cell(1,1) == EMPTY:
         setCell(1,1,CROSS)
-        MM.image = Ximage
-        MM.configure(image=Ximage)
-        MM.config(state='disabled')
+        Buttons[4].image = Ximage
+        Buttons[4].configure(image=Ximage)
+        Buttons[4].config(state='disabled')
     elif cell(1,0) == EMPTY or cell(0,1) == EMPTY or cell(2,1) == EMPTY or cell(1,2) == EMPTY:
         choice1 = randint(0,2)
         choice2 = randint(0,2)
@@ -135,21 +136,21 @@ def machineMove():
             choice2 = randint(0,2)
         setCell(choice1, choice2, CROSS)
         if choice1 == 1 and choice2 == 0:
-            TM.image = Ximage
-            TM.configure(image=Ximage)
-            TM.config(state='disabled')
+            Buttons[1].image = Ximage
+            Buttons[1].configure(image=Ximage)
+            Buttons[1].config(state='disabled')
         elif choice1 == 0 and choice2 == 1:
-            ML.image = Ximage
-            ML.configure(image=Ximage)
-            ML.config(state='disabled')
+            Buttons[3].image = Ximage
+            Buttons[3].configure(image=Ximage)
+            Buttons[3].config(state='disabled')
         elif choice1 == 2 and choice2 == 1:
-            MR.image = Ximage
-            MR.configure(image=Ximage)
-            MR.config(state='disabled')
+            Buttons[5].image = Ximage
+            Buttons[5].configure(image=Ximage)
+            Buttons[5].config(state='disabled')
         elif choice1 == 1 and choice2 == 2:
-            BM.image = Ximage
-            BM.configure(image=Ximage)
-            BM.config(state='disabled')
+            Buttons[7].image = Ximage
+            Buttons[7].configure(image=Ximage)
+            Buttons[7].config(state='disabled')
     if  isWon():
         announceWinner()
 
@@ -163,60 +164,62 @@ def onButtonPress(button, x,y):
     else:
 		announceWinner()
 
-TL = tk.Button(root1, command=lambda: onButtonPress(TL, 0, 0))
-imageTL = Blankimage
-TL.config(image=imageTL)
-TL.image = imageTL
-TL.grid(column=0, row=0)
+def createButtons():
+	TL = tk.Button(root1, command=lambda: onButtonPress(TL, 0, 0))
+	imageTL = Blankimage
+	TL.config(image=imageTL)
+	TL.image = imageTL
+	TL.grid(column=0, row=0)
 
-TM = tk.Button(root1, command=lambda: onButtonPress(TM, 1, 0))
-imageTM = Blankimage
-TM.config(image=imageTM)
-TM.image = imageTM
-TM.grid(column=1, row=0)
+	TM = tk.Button(root1, command=lambda: onButtonPress(TM, 1, 0))
+	imageTM = Blankimage
+	TM.config(image=imageTM)
+	TM.image = imageTM
+	TM.grid(column=1, row=0)
 
-TR = tk.Button(root1, command=lambda: onButtonPress(TR, 2, 0))
-imageTR = Blankimage
-TR.config(image=imageTR)
-TR.image = imageTR
-TR.grid(column=2, row=0)
+	TR = tk.Button(root1, command=lambda: onButtonPress(TR, 2, 0))
+	imageTR = Blankimage
+	TR.config(image=imageTR)
+	TR.image = imageTR
+	TR.grid(column=2, row=0)
 
+	ML = tk.Button(root1, command=lambda: onButtonPress(ML, 0, 1))
+	imageML = Blankimage
+	ML.config(image=imageML)
+	ML.image = imageML
+	ML.grid(column=0, row=1)
 
-ML = tk.Button(root1, command=lambda: onButtonPress(ML, 0, 1))
-imageML = Blankimage
-ML.config(image=imageML)
-ML.image = imageML
-ML.grid(column=0, row=1)
+	MM = tk.Button(root1, command=lambda: onButtonPress(MM, 1, 1))
+	imageMM = Blankimage
+	MM.config(image=imageMM)
+	MM.image = imageTM
+	MM.grid(column=1, row=1)
 
-MM = tk.Button(root1, command=lambda: onButtonPress(MM, 1, 1))
-imageMM = Blankimage
-MM.config(image=imageMM)
-MM.image = imageTM
-MM.grid(column=1, row=1)
+	MR = tk.Button(root1, command=lambda: onButtonPress(MR, 2, 1))
+	imageMR = Blankimage
+	MR.config(image=imageMR)
+	MR.image = imageMR
+	MR.grid(column=2, row=1)
 
-MR = tk.Button(root1, command=lambda: onButtonPress(MR, 2, 1))
-imageMR = Blankimage
-MR.config(image=imageMR)
-MR.image = imageMR
-MR.grid(column=2, row=1)
+	BL = tk.Button(root1, command=lambda: onButtonPress(BL, 0, 2))
+	imageBL = Blankimage
+	BL.config(image=imageBL)
+	BL.image = imageTL
+	BL.grid(column=0, row=2)
 
+	BM = tk.Button(root1, command=lambda: onButtonPress(BM, 1, 2))
+	imageBM = Blankimage
+	BM.config(image=imageBM)
+	BM.image = imageBM
+	BM.grid(column=1, row=2)
 
-BL = tk.Button(root1, command=lambda: onButtonPress(BL, 0, 2))
-imageBL = Blankimage
-BL.config(image=imageBL)
-BL.image = imageTL
-BL.grid(column=0, row=2)
+	BR = tk.Button(root1, command=lambda: onButtonPress(BR, 2, 2))
+	imageBR = Blankimage
+	BR.config(image=imageBR)
+	BR.image = imageBR
+	BR.grid(column=2, row=2)
+	
+	return [TL, TM, TR, ML, MM, MR, BL, BM, BR]
 
-BM = tk.Button(root1, command=lambda: onButtonPress(BM, 1, 2))
-imageBM = Blankimage
-BM.config(image=imageBM)
-BM.image = imageBM
-BM.grid(column=1, row=2)
-
-BR = tk.Button(root1, command=lambda: onButtonPress(BR, 2, 2))
-imageBR = Blankimage
-BR.config(image=imageBR)
-BR.image = imageBR
-BR.grid(column=2, row=2)
-
+Buttons = createButtons()
 root1.mainloop()
