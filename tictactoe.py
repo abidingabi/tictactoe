@@ -10,8 +10,7 @@ PLAYER_NAMES = ['Nobody', 'Computer', 'Player']
 class Board:
 	WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 	
-	def __init__(self, cells = None):
-		if (cells == None): cells = [EMPTY]*9
+	def __init__(self, cells = [EMPTY]*9):
 		self.cells = cells
 		self.nextMove = NOUGHT
 		self.rank = 0
@@ -22,8 +21,15 @@ class Board:
 			val = self.cells[combo[0]] * self.cells[combo[1]] * self.cells[combo[2]]
 			if (val == CROSS**3): return CROSS
 			if (val == NOUGHT**3): return NOUGHT
-		return EMPTY		
-
+		return EMPTY
+	def cell(self, x,y): return self.cells[y*3+x]
+	
+	def setCell(self, x,y,value): 
+		index = y*3+x
+		currentBoard.cells[index] = value
+		buttons[index].image = images[value]
+		buttons[index].configure(image=images[value])
+		buttons[index].config(state='disabled')
 currentBoard = Board()
 buttons = []
 
@@ -41,14 +47,7 @@ def disableAllbuttons():
 	for x in buttons:
 		x.config(state = 'disabled')  
 
-def cell(x,y): return currentBoard.cells[y*3+x]
 
-def setCell(x,y,value): 
-	index = y*3+x
-	currentBoard.cells[index] = value
-	buttons[index].image = images[value]
-	buttons[index].configure(image=images[value])
-	buttons[index].config(state='disabled')
 
 def announceWinner():
 	side = currentBoard.isWon()
@@ -58,11 +57,11 @@ def announceWinner():
 
 def isEmpty(value):
 	if value == 'corner':
-		return cell(0,0) == EMPTY or cell(0,2) == EMPTY or cell(2,0) == EMPTY or cell(2,2) == EMPTY
+		return currentBoard.cell(0,0) == EMPTY or currentBoard.cell(0,2) == EMPTY or currentBoard.cell(2,0) == EMPTY or currentBoard.cell(2,2) == EMPTY
 	elif value == 'side':
-		return cell(1,0) == EMPTY or cell(0,1) == EMPTY or cell(2,1) == EMPTY or cell(1,2) == EMPTY
+		return currentBoard.cell(1,0) == EMPTY or currentBoard.cell(0,1) == EMPTY or currentBoard.cell(2,1) == EMPTY or currentBoard.cell(1,2) == EMPTY
 	elif value == 'center':
-		return cell(1,1) == EMPTY
+		return currentBoard.cell(1,1) == EMPTY
 	
 	
 def machineMove():
@@ -73,7 +72,7 @@ def machineMove():
                 choice1 = 2
             if choice2 == 1:
                 choice2 = 2
-            while cell(choice1,choice2) !=EMPTY:
+            while currentBoard.cell(choice1,choice2) !=EMPTY:
                 choice1 = randint(0,1)
                 choice2 = randint(0,1)
                 if choice1 == 1:
@@ -81,22 +80,22 @@ def machineMove():
                 if choice2 == 1:
                     choice2 = 2
                                         
-            setCell(choice1,choice2, CROSS)
+            currentBoard.setCell(choice1,choice2, CROSS)
         
     elif isEmpty('center'):
-        setCell(1,1,CROSS)
+        currentBoard.setCell(1,1,CROSS)
     elif isEmpty('side'):
         choice1 = randint(0,2)
         choice2 = randint(0,2)
-        while cell(choice1,choice2) !=EMPTY:
+        while currentBoard.cell(choice1,choice2) !=EMPTY:
             choice1 = randint(0,2)
             choice2 = randint(0,2)
-        setCell(choice1, choice2, CROSS)
+        currentBoard.setCell(choice1, choice2, CROSS)
     if  currentBoard.isWon():
         announceWinner()
 
 def onButtonPress(button, x,y):
-    setCell(x,y, NOUGHT)
+    currentBoard.setCell(x,y, NOUGHT)
     if not currentBoard.isWon():
         machineMove()
     else:
