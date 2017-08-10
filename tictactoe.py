@@ -54,9 +54,9 @@ def won(x):
 		return False
 	
 def isWon():
-	if won(1):
+	if won(CROSS**3):
 		return CROSS    
-	elif won(8):
+	elif won(NOUGHT**3):
 		return NOUGHT
 	else:
 		return EMPTY
@@ -67,8 +67,17 @@ def announceWinner():
 	w.pack(side='top')
 	disableAllButtons()
 
+def isEmpty(value):
+	if value == 'corner':
+		return cell(0,0) == EMPTY or cell(0,2) == EMPTY or cell(2,0) == EMPTY or cell(2,2) == EMPTY
+	elif value == 'side':
+		return cell(1,0) == EMPTY or cell(0,1) == EMPTY or cell(2,1) == EMPTY or cell(1,2) == EMPTY
+	elif value == 'center':
+		return cell(1,1) == EMPTY
+	
+	
 def machineMove():
-    if cell(0,0) == EMPTY or cell(0,2) == EMPTY or cell(2,0) == EMPTY or cell(2,2) == EMPTY:
+    if isEmpty('corner'):
             choice1 = randint(0,1)
             choice2 = randint(0,1)
             if choice1 == 1:
@@ -85,9 +94,9 @@ def machineMove():
                                         
             setCell(choice1,choice2, CROSS)
         
-    elif cell(1,1) == EMPTY:
+    elif isEmpty('center'):
         setCell(1,1,CROSS)
-    elif cell(1,0) == EMPTY or cell(0,1) == EMPTY or cell(2,1) == EMPTY or cell(1,2) == EMPTY:
+    elif isEmpty('side'):
         choice1 = randint(0,2)
         choice2 = randint(0,2)
         while cell(choice1,choice2) !=EMPTY:
