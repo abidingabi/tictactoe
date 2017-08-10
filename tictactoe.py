@@ -6,9 +6,7 @@ EMPTY = 0
 CROSS = 1
 NOUGHT = 2
 PLAYER_NAMES = ['Nobody', 'Computer', 'Player']    
-
-
-
+WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 
 w, h = 3, 3;
 Board = [EMPTY]*9
@@ -40,29 +38,15 @@ def setCell(x,y,value):
 	Buttons[index].configure(image=Images[value])
 	Buttons[index].config(state='disabled')
 
-def multiplyArray(list):
-	product = 1
-	for x in list:
-		product *= x
-	return product
-
-def won(x):
-	WINNING_COMBOS = [[Board[0],Board[1],Board[2]], [Board[3],Board[4],Board[5]], [Board[6],Board[7],Board[8]], [Board[0],Board[3],Board[6]], [Board[1],Board[4],Board[7]], [Board[2],Board[5],Board[8]], [Board[0],Board[4],Board[8]], [Board[2],Board[4],Board[6]]]
-	if multiplyArray(WINNING_COMBOS[0]) == x or multiplyArray(WINNING_COMBOS[1]) == x or multiplyArray(WINNING_COMBOS[2]) == x or multiplyArray(WINNING_COMBOS[2]) == x or multiplyArray(WINNING_COMBOS[3]) == x or multiplyArray(WINNING_COMBOS[4]) == x or multiplyArray(WINNING_COMBOS[5]) == x or multiplyArray(WINNING_COMBOS[6]) == x or multiplyArray(WINNING_COMBOS[7]) == x:
-		return True
-	else:
-		return False
-	
-def isWon():
-	if won(CROSS**3):
-		return CROSS    
-	elif won(NOUGHT**3):
-		return NOUGHT
-	else:
-		return EMPTY
+def isWon(board):
+	for combo in WINNING_COMBOS:
+		val = board[combo[0]] * board[combo[1]] * board[combo[2]]
+		if (val == CROSS**3): return CROSS
+		if (val == NOUGHT**3): return NOUGHT
+	return EMPTY
     
 def announceWinner():
-	side = isWon()
+	side = isWon(Board)
 	w = tk.Label(root1, text=getPlayerName(side)+' has won.')
 	w.pack(side='top')
 	disableAllButtons()
@@ -103,12 +87,12 @@ def machineMove():
             choice1 = randint(0,2)
             choice2 = randint(0,2)
         setCell(choice1, choice2, CROSS)
-    if  isWon():
+    if  isWon(Board):
         announceWinner()
 
 def onButtonPress(button, x,y):
     setCell(x,y, NOUGHT)
-    if not isWon():
+    if not isWon(Board):
         machineMove()
     else:
 		announceWinner()
@@ -171,4 +155,6 @@ def createButtons():
 	return [TL, TM, TR, ML, MM, MR, BL, BM, BR]
 
 Buttons = createButtons()
-root1.mainloop()
+
+if __name__ == '__main__':
+	root1.mainloop()
