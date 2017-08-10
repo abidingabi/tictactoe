@@ -26,10 +26,11 @@ class Board:
 	
 	def setCell(self, x,y,value): 
 		index = y*3+x
-		currentBoard.cells[index] = value
+		self.cells[index] = value
 		buttons[index].image = images[value]
 		buttons[index].configure(image=images[value])
 		buttons[index].config(state='disabled')
+		
 currentBoard = Board()
 buttons = []
 
