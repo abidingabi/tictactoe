@@ -8,35 +8,31 @@ NOUGHT = 2
 PLAYER_NAMES = ['Nobody', 'Computer', 'Player']    
 WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 
-w, h = 3, 3;
-Board = [EMPTY]*9
-Buttons = []
+currentBoard = [EMPTY]*9
+buttons = []
 
-root1 = tk.Tk()
-root1.title('Tic Tac Toe')
-root1.geometry('320x320')
+window = tk.Tk()
+window.title('Tic Tac Toe')
+window.geometry('320x320')
 
-Ximage = ImageTk.PhotoImage(file='.\Images\X Square.png')
-Oimage = ImageTk.PhotoImage(file='.\Images\O Square.png')
-Blankimage = ImageTk.PhotoImage(file='.\Images\Empty Square.png')
-
-Images = [Blankimage, Ximage, Oimage]
+def loadImage(name): return ImageTk.PhotoImage(file='.\Images\\' + name + '.png')
+images = [ loadImage('Empty Square'), loadImage('X Square'), loadImage('O Square') ]
 
 def getPlayerName(side):
 	return PLAYER_NAMES[side]
 	
-def disableAllButtons():
-	for x in Buttons:
+def disableAllbuttons():
+	for x in buttons:
 		x.config(state = 'disabled')  
 
-def cell(x,y): return Board[y*3+x]
+def cell(x,y): return currentBoard[y*3+x]
 
 def setCell(x,y,value): 
 	index = y*3+x
-	Board[index] = value
-	Buttons[index].image = Images[value]
-	Buttons[index].configure(image=Images[value])
-	Buttons[index].config(state='disabled')
+	currentBoard[index] = value
+	buttons[index].image = images[value]
+	buttons[index].configure(image=images[value])
+	buttons[index].config(state='disabled')
 
 def isWon(board):
 	for combo in WINNING_COMBOS:
@@ -46,10 +42,10 @@ def isWon(board):
 	return EMPTY
     
 def announceWinner():
-	side = isWon(Board)
-	w = tk.Label(root1, text=getPlayerName(side)+' has won.')
+	side = isWon(currentBoard)
+	w = tk.Label(window, text=getPlayerName(side)+' has won.')
 	w.pack(side='top')
-	disableAllButtons()
+	disableAllbuttons()
 
 def isEmpty(value):
 	if value == 'corner':
@@ -87,74 +83,74 @@ def machineMove():
             choice1 = randint(0,2)
             choice2 = randint(0,2)
         setCell(choice1, choice2, CROSS)
-    if  isWon(Board):
+    if  isWon(currentBoard):
         announceWinner()
 
 def onButtonPress(button, x,y):
     setCell(x,y, NOUGHT)
-    if not isWon(Board):
+    if not isWon(currentBoard):
         machineMove()
     else:
 		announceWinner()
 
-def createButtons():
-	TL = tk.Button(root1, command=lambda: onButtonPress(TL, 0, 0))
-	imageTL = Blankimage
+def createbuttons():
+	TL = tk.Button(window, command=lambda: onButtonPress(TL, 0, 0))
+	imageTL = images[EMPTY]
 	TL.config(image=imageTL)
 	TL.image = imageTL
 	TL.grid(column=0, row=0)
 
-	TM = tk.Button(root1, command=lambda: onButtonPress(TM, 1, 0))
-	imageTM = Blankimage
+	TM = tk.Button(window, command=lambda: onButtonPress(TM, 1, 0))
+	imageTM = images[EMPTY]
 	TM.config(image=imageTM)
 	TM.image = imageTM
 	TM.grid(column=1, row=0)
 
-	TR = tk.Button(root1, command=lambda: onButtonPress(TR, 2, 0))
-	imageTR = Blankimage
+	TR = tk.Button(window, command=lambda: onButtonPress(TR, 2, 0))
+	imageTR = images[EMPTY]
 	TR.config(image=imageTR)
 	TR.image = imageTR
 	TR.grid(column=2, row=0)
 
-	ML = tk.Button(root1, command=lambda: onButtonPress(ML, 0, 1))
-	imageML = Blankimage
+	ML = tk.Button(window, command=lambda: onButtonPress(ML, 0, 1))
+	imageML = images[EMPTY]
 	ML.config(image=imageML)
 	ML.image = imageML
 	ML.grid(column=0, row=1)
 
-	MM = tk.Button(root1, command=lambda: onButtonPress(MM, 1, 1))
-	imageMM = Blankimage
+	MM = tk.Button(window, command=lambda: onButtonPress(MM, 1, 1))
+	imageMM = images[EMPTY]
 	MM.config(image=imageMM)
 	MM.image = imageTM
 	MM.grid(column=1, row=1)
 
-	MR = tk.Button(root1, command=lambda: onButtonPress(MR, 2, 1))
-	imageMR = Blankimage
+	MR = tk.Button(window, command=lambda: onButtonPress(MR, 2, 1))
+	imageMR = images[EMPTY]
 	MR.config(image=imageMR)
 	MR.image = imageMR
 	MR.grid(column=2, row=1)
 
-	BL = tk.Button(root1, command=lambda: onButtonPress(BL, 0, 2))
-	imageBL = Blankimage
+	BL = tk.Button(window, command=lambda: onButtonPress(BL, 0, 2))
+	imageBL = images[EMPTY]
 	BL.config(image=imageBL)
 	BL.image = imageTL
 	BL.grid(column=0, row=2)
 
-	BM = tk.Button(root1, command=lambda: onButtonPress(BM, 1, 2))
-	imageBM = Blankimage
+	BM = tk.Button(window, command=lambda: onButtonPress(BM, 1, 2))
+	imageBM = images[EMPTY]
 	BM.config(image=imageBM)
 	BM.image = imageBM
 	BM.grid(column=1, row=2)
 
-	BR = tk.Button(root1, command=lambda: onButtonPress(BR, 2, 2))
-	imageBR = Blankimage
+	BR = tk.Button(window, command=lambda: onButtonPress(BR, 2, 2))
+	imageBR = images[EMPTY]
 	BR.config(image=imageBR)
 	BR.image = imageBR
 	BR.grid(column=2, row=2)
 	
 	return [TL, TM, TR, ML, MM, MR, BL, BM, BR]
 
-Buttons = createButtons()
+buttons = createbuttons()
 
 if __name__ == '__main__':
-	root1.mainloop()
+	window.mainloop()
