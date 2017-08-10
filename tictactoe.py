@@ -6,9 +6,25 @@ EMPTY = 0
 CROSS = 1
 NOUGHT = 2
 PLAYER_NAMES = ['Nobody', 'Computer', 'Player']    
-WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
 
-currentBoard = [EMPTY]*9
+class Board:
+	WINNING_COMBOS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
+	
+	def __init__(self, cells = None):
+		if (cells == None): cells = [EMPTY]*9
+		self.cells = cells
+		self.nextMove = NOUGHT
+		self.rank = 0
+		self.children = [None]*9
+		
+	def isWon(self):
+		for combo in Board.WINNING_COMBOS:
+			val = self.cells[combo[0]] * self.cells[combo[1]] * self.cells[combo[2]]
+			if (val == CROSS**3): return CROSS
+			if (val == NOUGHT**3): return NOUGHT
+		return EMPTY		
+
+currentBoard = Board()
 buttons = []
 
 window = tk.Tk()
@@ -25,24 +41,17 @@ def disableAllbuttons():
 	for x in buttons:
 		x.config(state = 'disabled')  
 
-def cell(x,y): return currentBoard[y*3+x]
+def cell(x,y): return currentBoard.cells[y*3+x]
 
 def setCell(x,y,value): 
 	index = y*3+x
-	currentBoard[index] = value
+	currentBoard.cells[index] = value
 	buttons[index].image = images[value]
 	buttons[index].configure(image=images[value])
 	buttons[index].config(state='disabled')
 
-def isWon(board):
-	for combo in WINNING_COMBOS:
-		val = board[combo[0]] * board[combo[1]] * board[combo[2]]
-		if (val == CROSS**3): return CROSS
-		if (val == NOUGHT**3): return NOUGHT
-	return EMPTY
-    
 def announceWinner():
-	side = isWon(currentBoard)
+	side = currentBoard.isWon()
 	w = tk.Label(window, text=getPlayerName(side)+' has won.')
 	w.pack(side='top')
 	disableAllbuttons()
@@ -83,12 +92,12 @@ def machineMove():
             choice1 = randint(0,2)
             choice2 = randint(0,2)
         setCell(choice1, choice2, CROSS)
-    if  isWon(currentBoard):
+    if  currentBoard.isWon():
         announceWinner()
 
 def onButtonPress(button, x,y):
     setCell(x,y, NOUGHT)
-    if not isWon(currentBoard):
+    if not currentBoard.isWon():
         machineMove()
     else:
 		announceWinner()
