@@ -31,6 +31,40 @@ class Board:
 		buttons[index].configure(image=images[value])
 		buttons[index].config(state='disabled')
 		
+	# creates a new board after "nextMove" party puts a mark at the cell "index"
+	def move(self, index):
+		if self.cells[index] != EMPTY: return None # the cell is already taken
+		result = Board(self.cells[:]) # clone current cells
+		result.cells[index] = self.nextMove
+		result.nextMove = NOUGHT if self.nextMove == CROSS else CROSS
+		return result
+
+# builds game tree; assumes "board" does NOT represent a winning position
+def buildGameTree(board):
+	for index in range(0,9):
+		child = board.move(index)
+		if child != None:
+			won = child.isWon()
+			if won == CROSS: child.rank = 1
+			elif won == NOUGHT: child.rank = -1
+			else: buildGameTree(child)
+			board.children[index] = child
+	if board.nextMove == CROSS:
+		ranks = []
+		for child in board.children:
+			if child is not None:
+				ranks += [child.rank]
+			else: ranks += [-2]
+		board.rank = max(ranks)
+			
+	elif board.nextMove == NOUGHT:
+		ranks = []
+		for child in board.children:
+			if child is not None:
+				ranks += [child.rank]
+			else: ranks += [2]
+		board.rank = min(ranks)
+		
 currentBoard = Board()
 buttons = []
 
