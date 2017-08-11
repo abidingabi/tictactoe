@@ -123,8 +123,18 @@ class TicTacToeTest(unittest.TestCase):
 								 _,O,X,
 								 X,_,_])
 		board.nextMove = O
-		tree = tictactoe.buildGameTree(board)
-											 
+		tictactoe.buildGameTree(board)
+		self.assertEqual(-1, board.rank)									 
+	
+	def test_max_rank(self):
+		children = {1:tictactoe.Board(), 5:tictactoe.Board(), 3:tictactoe.Board()}
+		children[1].rank = 0
+		children[5].rank = 1
+		children[3].rank = -1
+		
+		maxKey = max(children.iterkeys(), key=(lambda key: children[key].rank))
+		self.assertEqual(5, maxKey)
+		
 if __name__ == '__main__':
 	suite = unittest.TestLoader().loadTestsFromTestCase(TicTacToeTest)
 	unittest.TextTestRunner(verbosity=2).run(suite)

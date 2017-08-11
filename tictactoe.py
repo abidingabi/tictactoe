@@ -14,7 +14,7 @@ class Board:
 		self.cells = cells
 		self.nextMove = NOUGHT
 		self.rank = 0
-		self.children = [None]*9
+		self.children = {}
 		
 	def isWon(self):
 		for combo in Board.WINNING_COMBOS:
@@ -23,13 +23,7 @@ class Board:
 			if (val == NOUGHT**3): return NOUGHT
 		return EMPTY
 	def cell(self, x,y): return self.cells[y*3+x]
-	
-	def setCell(self, x,y,value): 
-		index = y*3+x
-		self.cells[index] = value
-		buttons[index].image = images[value]
-		buttons[index].configure(image=images[value])
-		buttons[index].config(state='disabled')
+		
 		
 	# creates a new board after "nextMove" party puts a mark at the cell "index"
 	def move(self, index):
@@ -38,32 +32,30 @@ class Board:
 		result.cells[index] = self.nextMove
 		result.nextMove = NOUGHT if self.nextMove == CROSS else CROSS
 		return result
-
+		
+def displayMove(index, value):
+	buttons[index].image = images[value]
+	buttons[index].configure(image=images[value])
+	buttons[index].config(state='disabled')
+	
 # builds game tree; assumes "board" does NOT represent a winning position
 def buildGameTree(board):
+	won = board.isWon()
+	if won == CROSS: board.rank = 1; return
+	if won == NOUGHT: board.rank = -1; return
+	
 	for index in range(0,9):
 		child = board.move(index)
 		if child != None:
-			won = child.isWon()
-			if won == CROSS: child.rank = 1
-			elif won == NOUGHT: child.rank = -1
-			else: buildGameTree(child)
+			buildGameTree(child)
 			board.children[index] = child
-	if board.nextMove == CROSS:
-		ranks = []
-		for child in board.children:
-			if child is not None:
-				ranks += [child.rank]
-			else: ranks += [-2]
-		board.rank = max(ranks)
 			
-	elif board.nextMove == NOUGHT:
-		ranks = []
-		for child in board.children:
-			if child is not None:
-				ranks += [child.rank]
-			else: ranks += [2]
-		board.rank = min(ranks)
+	if not board.children: board.rank = 0; return
+	
+	childRanks = [child.rank for child in board.children.values()]
+	
+	if board.nextMove == CROSS: board.rank = max(childRanks)	
+	elif board.nextMove == NOUGHT: board.rank = min(childRanks)
 		
 currentBoard = Board()
 buttons = []
@@ -97,44 +89,22 @@ def isEmpty(value):
 		return currentBoard.cell(1,0) == EMPTY or currentBoard.cell(0,1) == EMPTY or currentBoard.cell(2,1) == EMPTY or currentBoard.cell(1,2) == EMPTY
 	elif value == 'center':
 		return currentBoard.cell(1,1) == EMPTY
-	
-	
+		
 def machineMove():
-    if isEmpty('corner'):
-            choice1 = randint(0,1)
-            choice2 = randint(0,1)
-            if choice1 == 1:
-                choice1 = 2
-            if choice2 == 1:
-                choice2 = 2
-            while currentBoard.cell(choice1,choice2) !=EMPTY:
-                choice1 = randint(0,1)
-                choice2 = randint(0,1)
-                if choice1 == 1:
-                    choice1 = 2
-                if choice2 == 1:
-                    choice2 = 2
-                                        
-            currentBoard.setCell(choice1,choice2, CROSS)
-        
-    elif isEmpty('center'):
-        currentBoard.setCell(1,1,CROSS)
-    elif isEmpty('side'):
-        choice1 = randint(0,2)
-        choice2 = randint(0,2)
-        while currentBoard.cell(choice1,choice2) !=EMPTY:
-            choice1 = randint(0,2)
-            choice2 = randint(0,2)
-        currentBoard.setCell(choice1, choice2, CROSS)
-    if  currentBoard.isWon():
-        announceWinner()
-
+	global currentBoard
+	if not currentBoard.children: announceWinner(); return
+	index = max(currentBoard.children.iterkeys(), key=(lambda key: currentBoard.children[key].rank))
+	currentBoard = currentBoard.children[index]
+	displayMove(index, CROSS)
+	if currentBoard.isWon(): announceWinner()
+	
 def onButtonPress(button, x,y):
-    currentBoard.setCell(x,y, NOUGHT)
-    if not currentBoard.isWon():
-        machineMove()
-    else:
-		announceWinner()
+	global currentBoard
+	index = y*3+x
+	currentBoard = currentBoard.children[index]
+	displayMove(index, NOUGHT)
+	if not currentBoard.isWon(): machineMove()
+	else: announceWinner()
 
 def createbuttons():
 	TL = tk.Button(window, command=lambda: onButtonPress(TL, 0, 0))
@@ -196,4 +166,5 @@ def createbuttons():
 buttons = createbuttons()
 
 if __name__ == '__main__':
+	buildGameTree(currentBoard)
 	window.mainloop()
