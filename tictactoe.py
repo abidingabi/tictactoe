@@ -2,6 +2,7 @@ import Tkinter as tk
 from PIL import Image, ImageTk
 from random import randint
 import cPickle as pickle
+import os
 
 EMPTY = 0
 CROSS = 1
@@ -43,23 +44,34 @@ file_name = 'tree.pkl'
 
 # builds game tree; assumes "board" does NOT represent a winning position
 def buildGameTree(board):
-	treeReadFile = open(file_name, 'r')
-	won = board.isWon()
-	if won == CROSS: board.rank = 1; return
-	if won == NOUGHT: board.rank = -1; return
+	if os.path.exists(file_name) and os.path.getsize(file_name) > 0:
+		with open(file_name, 'rb') as f:
+			pklFile = pickle.load(f)
 
-	for index in range(0,9):
-		child = board.move(index)
-		if child != None:
-			buildGameTree(child)
-			board.children[index] = child
+		board.children = pklFile
+		childRanks = [child.rank for child in board.children.values()]
 
-	if not board.children: board.rank = 0; return
+		if board.nextMove == CROSS: board.rank = max(childRanks)
+		elif board.nextMove == NOUGHT: board.rank = min(childRanks)
 
-	childRanks = [child.rank for child in board.children.values()]
+	else:
+		treeReadFile = open(file_name, 'r')
+		won = board.isWon()
+		if won == CROSS: board.rank = 1; return
+		if won == NOUGHT: board.rank = -1; return
 
-	if board.nextMove == CROSS: board.rank = max(childRanks)
-	elif board.nextMove == NOUGHT: board.rank = min(childRanks)
+		for index in range(0,9):
+			child = board.move(index)
+			if child != None:
+				buildGameTree(child)
+				board.children[index] = child
+
+		if not board.children: board.rank = 0; return
+
+		childRanks = [child.rank for child in board.children.values()]
+
+		if board.nextMove == CROSS: board.rank = max(childRanks)
+		elif board.nextMove == NOUGHT: board.rank = min(childRanks)
 
 currentBoard = Board()
 buttons = []
@@ -173,7 +185,7 @@ buildGameTree(currentBoard)
 
 # open the file for writing
 fileObject = open(file_name,'wb')
-pickle.dump(currentBoard.children, fileObject)
 
 if __name__ == '__main__':
+	pickle.dump(currentBoard.children, fileObject)
 	window.mainloop()
